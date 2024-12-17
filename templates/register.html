@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>Register</h2>
+      {% with messages = get_flashed_messages() %} {% if messages %}
+      <div class="alert">
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+      </div>
+      {% endif %} {% endwith %}
+      <form action="/register" method="post">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required />
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="show-password" />
+          <label for="show-password">Show Password</label>
+        </div>
+        <button type="submit">Register</button>
+      </form>
+      <p class="login-link">
+        Already have an account? <a href="/login">Login here</a>
+      </p>
+    </div>
+    <script>
+      document
+        .getElementById('show-password')
+        .addEventListener('change', function () {
+          var passwordField = document.getElementById('password');
+          if (this.checked) {
+            passwordField.type = 'text';
+          } else {
+            passwordField.type = 'password';
+          }
+        });
+    </script>
+  </body>
+</html>
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .container {
+    background-color: #fff;
+    padding: 20px 40px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    width: 400px;
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .form-group {
+    margin-bottom: 25px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #555;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+  }
+
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    margin-bottom: 25px;
+  }
+
+  .checkbox-group input {
+    margin-right: 8px;
+    display: inline-block;
+  }
+
+  .checkbox-group label {
+    display: inline;
+    font-size: 14px;
+    color: #555;
+  }
+
+  button {
+    width: 100%;
+    padding: 14px;
+    background-color: #4caf50;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #45a049;
+  }
+
+  .login-link {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 16px;
+    color: #555;
+  }
+
+  .login-link a {
+    color: #4caf50;
+    text-decoration: none;
+  }
+
+  .login-link a:hover {
+    text-decoration: underline;
+  }
+
+  .alert {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+
+  .alert p {
+    margin: 0;
+  }
+</style>
