@@ -2,6 +2,14 @@ import torch
 from torchvision import transforms
 from PIL import Image
 from model import get_model
+import boto3
+import io
+import os
+
+# Load environment variables
+aws_access_key_id = os.getenv('AWS_ACCESS_KEY_ID')
+aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+aws_region = os.getenv('AWS_DEFAULT_REGION')
 
 # Define the number of classes (adjust based on your dataset)
 num_classes = 9  # Example: 9 classes for tomato diseases
@@ -9,8 +17,17 @@ num_classes = 9  # Example: 9 classes for tomato diseases
 # Initialize the model architecture
 model = get_model(num_classes)
 
-# Load the model state dictionary with weights_only=True
-model.load_state_dict(torch.load('model.pth', map_location=torch.device('cpu'), weights_only=True))
+# Download the model from S3 into memory
+s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key, region_name=aws_region)
+bucket_name = 'machinelearningmodels65675'
+model_key = 'model.pth'
+
+model_buffer = io.BytesIO()
+s3.download_fileobj(bucket_name, model_key, model_buffer)
+model_buffer.seek(0)
+
+# Load the model state dictionary
+model.load_state_dict(torch.load(model_buffer, map_location=torch.device('cpu')))
 model.eval()
 
 # Define the image transformation

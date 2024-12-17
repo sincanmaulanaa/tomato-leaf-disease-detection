@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from connection import client
 from detection import predict
@@ -5,6 +6,8 @@ import os
 import bcrypt
 from functools import wraps
 from datetime import datetime
+
+load_dotenv()
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
