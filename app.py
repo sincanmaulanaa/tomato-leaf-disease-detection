@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from connection import client
 
 app = Flask(__name__)
 
