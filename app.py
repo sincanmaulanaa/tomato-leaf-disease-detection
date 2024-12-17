@@ -4,6 +4,7 @@ from detection import predict
 import os
 import bcrypt
 from functools import wraps
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
@@ -12,6 +13,7 @@ app.secret_key = 'tomatos'  # Replace with your secret key
 # Connect to MongoDB
 db = client['tomato']  # Replace with your database name
 users_collection = db['users']  # Replace with your collection name
+detections_collection = db['detections']  # New collection for storing detections
 
 @app.route('/')
 def home():
@@ -90,7 +92,23 @@ def upload_file():
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         file.save(file_path)
         disease_name, probability = predict(file_path)
+        
+        # Store detection result in the database
+        detections_collection.insert_one({
+            'username': session['username'],
+            'file_path': file_path,
+            'disease_name': disease_name,
+            'probability': probability,
+            'date': datetime.now()
+        })
+        
         return render_template('result.html', disease_name=disease_name, probability=probability)
+
+@app.route('/history')
+@login_required
+def history():
+    user_detections = detections_collection.find({'username': session['username']})
+    return render_template('history.html', detections=user_detections)
 
 if __name__ == '__main__':
     if not os.path.exists(app.config['UPLOAD_FOLDER']):

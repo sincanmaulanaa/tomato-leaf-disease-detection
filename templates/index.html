@@ -25,6 +25,25 @@
         align-items: center;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
+      header div a:first-child {
+        color: white;
+        text-decoration: none;
+        margin-right: 16px;
+        border: 1px solid white;
+        padding: 6px 14px;
+        border-radius: 5px;
+      }
+      header div a:first-child:hover {
+        color: #4caf50;
+        text-decoration: none;
+        margin-right: 16px;
+        border: 1px solid white;
+        padding: 6px 14px;
+        border-radius: 5px;
+        background-color: white;
+        transition: all;
+        transition-duration: 200ms;
+      }
       header h1 {
         margin: 0;
         font-weight: 600;
@@ -115,7 +134,10 @@
     <header>
       <h1>Tomato Diseases Detection</h1>
       {% if session.username %}
-      <a href="{{ url_for('logout') }}" class="logout-link">Logout</a>
+      <div>
+        <a href="{{ url_for('history') }}" class="history-link">History</a>
+        <a href="{{ url_for('logout') }}" class="logout-link">Logout</a>
+      </div>
       {% endif %}
     </header>
     <div class="container">
